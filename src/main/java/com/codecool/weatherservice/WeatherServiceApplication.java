@@ -1,8 +1,6 @@
 package com.codecool.weatherservice;
 
-import com.codecool.weatherservice.responsemodel.Quote;
 import com.codecool.weatherservice.responsemodel.WeatherData;
-import org.apache.juli.logging.LogFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
