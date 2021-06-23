@@ -3,6 +3,7 @@ package com.codecool.weatherservice.service;
 import com.codecool.weatherservice.responsemodel.WeatherData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -17,15 +18,15 @@ public class WeatherService {
     @Autowired
     private RestTemplate restTemplate;
 
-    public String getWeatherData() {
-        final String weatherUrl = String.format(urlFormat, "Budapest", apiKey);
+    @Cacheable("weatherdata")
+    public String getWeatherData(String city) {
+        printRequestsForCacheTest(city);
+        final String weatherUrl = String.format(urlFormat, city, apiKey);
 
         return restTemplate.getForObject(weatherUrl, WeatherData.class).toString();
     }
 
-    public String getWeatherData(String city) {
-        final String weatherUrl = String.format(urlFormat, city, apiKey);
-
-        return restTemplate.getForObject(weatherUrl, WeatherData.class).toString();
+    private void printRequestsForCacheTest(String city) {
+        System.out.printf("Requesting weather data of %s...%n", city);
     }
 }

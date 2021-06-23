@@ -15,7 +15,7 @@ public class WeatherController {
 
     @GetMapping
     public String showWeatherInBudapest() {
-        return weatherService.getWeatherData();
+        return weatherService.getWeatherData("Budapest");
     }
 
     @GetMapping("/{city}")
