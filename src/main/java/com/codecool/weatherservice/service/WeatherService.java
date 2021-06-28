@@ -26,12 +26,12 @@ public class WeatherService {
     private RestTemplate restTemplate;
 
     @Cacheable(value = "weatherData")
-    public String getWeatherData(String city) {
+    public WeatherData getWeatherData(String city) {
 
         printRequestsForCacheTest(city);
         final String weatherUrl = String.format(urlFormat, city, apiKey);
 
-        return String.format("%s %s", getTime(), restTemplate.getForObject(weatherUrl, WeatherData.class).toString());
+        return restTemplate.getForObject(weatherUrl, WeatherData.class);
     }
 
     private void printRequestsForCacheTest(String city) {

@@ -1,5 +1,6 @@
 package com.codecool.weatherservice.controller;
 
+import com.codecool.weatherservice.responsemodel.WeatherData;
 import com.codecool.weatherservice.service.WeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,12 +15,12 @@ public class WeatherController {
     private WeatherService weatherService;
 
     @GetMapping
-    public String showWeatherInBudapest() {
+    public WeatherData showWeatherInBudapest() {
         return weatherService.getWeatherData("Budapest");
     }
 
     @GetMapping("/{city}")
-    public String showWeather(@PathVariable String city){
+    public WeatherData showWeather(@PathVariable String city){
         return weatherService.getWeatherData(city);
     }
 }
