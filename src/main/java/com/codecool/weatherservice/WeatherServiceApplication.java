@@ -3,13 +3,17 @@ package com.codecool.weatherservice;
 import com.codecool.weatherservice.responsemodel.WeatherData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -17,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
  * http://api.openweathermap.org/data/2.5/weather?q=Budapest&appid={api_key}&units=metric&lang=hu
  */
 @SpringBootApplication
+@EnableScheduling
 @EnableCaching
 public class WeatherServiceApplication {
 
@@ -24,6 +29,15 @@ public class WeatherServiceApplication {
     private String apiKey;
 
     final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    CacheManager cacheManager;
+
+    @Scheduled(fixedRate = 60000)
+    public void evictAllCacheValues(){
+        System.out.println("Clearing cache...");
+        cacheManager.getCache("weatherData").clear();
+    }
 
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
