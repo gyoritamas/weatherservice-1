@@ -34,8 +34,8 @@ public class WeatherServiceApplication {
     CacheManager cacheManager;
 
     @Scheduled(fixedRate = 60000)
-    public void evictAllCacheValues(){
-        System.out.println("Clearing cache...");
+    public void evictAllCacheValues() {
+        logger.info("Clearing cache...");
         cacheManager.getCache("weatherData").clear();
     }
 
@@ -44,17 +44,16 @@ public class WeatherServiceApplication {
         return builder.build();
     }
 
-    @Bean
-    public CommandLineRunner run(RestTemplate restTemplate) throws Exception {
-        return args -> {
-            final String weatherUrl = "https://api.openweathermap.org/data/2.5/weather?q=Budapest&appid=" + apiKey + "&units=metric&lang=hu";
-            final WeatherData weatherData = restTemplate.getForObject(weatherUrl, WeatherData.class);
-            logger.info(weatherData.toString());
-        };
-    }
+//    @Bean
+//    public CommandLineRunner run(RestTemplate restTemplate) throws Exception {
+//        return args -> {
+//            final String weatherUrl = "https://api.openweathermap.org/data/2.5/weather?q=Budapest&appid=" + apiKey + "&units=metric&lang=hu";
+//            final WeatherData weatherData = restTemplate.getForObject(weatherUrl, WeatherData.class);
+//            logger.info(weatherData.toString());
+//        };
+//    }
 
     public static void main(String[] args) {
         SpringApplication.run(WeatherServiceApplication.class, args);
     }
-
 }
